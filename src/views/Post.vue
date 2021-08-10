@@ -42,6 +42,8 @@ export default {
     }
   },
   mounted () {
+    document.querySelector('html').style.overflow = 'visible';
+    document.querySelector('body').style.overflow = 'visible';
     axios.get('https://184c0da960.pythonanywhere.com/posts/'+this.route)
       .then(data => {
         this.post = data.data;
