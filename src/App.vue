@@ -19,7 +19,7 @@
 <script>
 
 import curDot from 'cursor-dot';
-// import $ from 'jquery';
+import $ from 'jquery';
 
 export default {
   data () {
@@ -68,10 +68,11 @@ export default {
       let main = document.createElement('script')
       main.setAttribute('src', '/assets/js/main.js')
       document.head.appendChild(main)
-      // var loader = $('#loader');
-      // // loader.style.opacity = '0';  
-      // loader.css('display', 'none');
-      this.loading = false
+      var loader = $('#loader');
+      // loader.style.opacity = '0';  
+      loader.css('display', 'none');
+      $('body > div:nth-child(5)').css('mix-blend-mode', 'difference');
+      $('body > div:nth-child(5)').css('background', '#fafafa');
   }
 }
 </script>

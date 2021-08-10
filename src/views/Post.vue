@@ -1,6 +1,6 @@
 <template>
 <div id="page">
-  <a href="#" @click="$router.go(-1)" class="back">Go Back</a>
+  <a href="#" @click="$router.go(-1)" class="back"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M3 12l18-12v24z"/></svg> Go Back</a>
   <div id="cont">
   <div id="progress"></div>
   </div>
@@ -8,14 +8,14 @@
     <div class="content-area">
       <main class="site-main" role="main">
         <span v-if="post.poster">
-        <img :src="post['poster']" :alt="post.title">
+        <img :src="post['poster']" :alt="post.title" class="unselectable">
         </span>
         <div class="post">
           <h1 class="entry-title">{{post.title}}</h1>
           <div class="entry-meta">
             <span class="posted-on">{{post.created_on | dater}} </span>
-            <span>|</span>
-            <span id="readTime"> Wait... </span>
+            <span><br></span>
+            <span class="posted-on" id="readTime"> Loading... </span>
           </div>
           <div class="entry-content">
             <p v-html="post.content"></p>
@@ -50,6 +50,26 @@ export default {
       $(window).scroll (function () {
       var ratio = $(document).scrollTop () / (($(document).height () - $(window).height ()) / 100);
       $("#progress").width (ratio + "%");
+
+      window.onscroll = function() {scroll()};
+
+      // Get the header
+      var title =  document.querySelector("#page > div.site-content > div > main > div > h1")
+
+      // Get the offset position of the navbar
+      var sticky = title.offsetTop;
+
+      // Add the sticky class to the title when you reach its scroll position. Remove "sticky" when you leave the scroll position
+      function scroll() {
+        if (window.pageYOffset > sticky) {
+          title.classList.add("active-title");
+          title.classList.remove("entry-title");
+        } else {
+          title.classList.remove("active-title");
+          title.classList.add("entry-title");
+        }
+      }
+      
 });
   },
   methods: {
@@ -59,6 +79,11 @@ export default {
       const time = Math.ceil(words / wpm);
       $('#readTime').text(' ' + time + ' minutes to read')
       // document.getElementById("readTime").innerText = time + 'minutes to read';
+      $('body > div:nth-child(5)').css('mix-blend-mode', 'difference');
+      $('body > div:nth-child(5)').css('background', '#fafafa');
+      let hight = document.createElement('script')
+      hight.setAttribute('src', '/assets/js/highlight.js')
+      document.head.appendChild(hight);
     }
   },
   filters: {
@@ -72,16 +97,29 @@ export default {
             }
         }
     },
+    created() {
+        $('script').each(function() {
+        if (this.src === 'https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js') {
+
+          this.parentNode.removeChild( this );
+        }
+    });
+    }
 }
 </script>
 
 <style>
+@import url('/assets/style/admin.css');
+@import url('/assets/style/highlight.css');
+
 /* ===== Scrollbar CSS ===== */
   /* Firefox */
   * {
     scrollbar-width: thin;
     scrollbar-color: #484748 #726e6e;
   }
+  *::-moz-selection { color: rgb(175, 150, 80)}
+  *::selection { color: rgb(175, 150, 80); }  
 
   /* Chrome, Edge, and Safari */
   *::-webkit-scrollbar {
@@ -121,6 +159,7 @@ export default {
  width: 0%;
  height: 6px;
 }
+
   #page {
   margin: 3em auto 60px;
   padding: 0 30px;
@@ -129,16 +168,31 @@ export default {
 
 .back {
   position: sticky;
-  left: 100px;top: 10px;
+  left: 00px;top: 10px;right: 0;bottom: 0;
   font-size: 16pt;
   display: inline;
   font-family: 'Title', sans-serif;
+}
+
+svg {
+  margin-bottom: -3px;
+  margin-left: -.5em;
 }
 
 img {
   max-width: 100%;
   max-height: 600px;
   z-index: 1;
+}
+
+
+pre {
+  direction: ltr;
+  padding: 10px;
+  background-color: #f3f3f3;
+  overflow: auto;
+  font-family: monospace,monospace;
+  font-size: 1em;
 }
 
 .site-main {
@@ -158,6 +212,25 @@ h1.entry-title {
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: 'Title', sans-serif;
+}
+
+.active-title {
+  position: fixed;
+  top: 0;left: 0;right: 0;
+  transition: all 1s ease;
+  font-size: 26px;
+  margin-top: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Title', sans-serif;
+  text-align: center;
+  background-color: #d7dddd;
+  color: #222121;
+  max-width: 650px;
+  padding: 15px;
+  margin: auto;
+  z-index: 100;
+
 }
 
 .entry-meta .posted-on {

@@ -5,9 +5,9 @@
 //     loader.style.display = 'none';
 // }
 
-document.querySelectorAll('.model').forEach(layer => {
-    layer.environmentImage = 'neutral'; 
-});
+// document.querySelectorAll('.model').forEach(layer => {
+//     layer.environmentImage = 'neutral'; 
+// });
 
 // Full Page
 // new fullpage('#fullpage', {
