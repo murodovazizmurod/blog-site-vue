@@ -165,7 +165,7 @@ export default {
   #page {
   margin: 3em auto 60px;
   padding: 0 30px;
-  max-width: 900px;
+  max-width: 732px;
 }
 
 .back {
