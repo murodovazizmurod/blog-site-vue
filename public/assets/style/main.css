@@ -21,7 +21,7 @@ body {
     background-color: #e9efef;
     color: #222831;
     background-blend-mode: hue;
-    mix-blend-mode: hue;
+/*     mix-blend-mode: hue; */
     /* font-family: 'Title'; */
 }
 
